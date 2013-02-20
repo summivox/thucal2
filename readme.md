@@ -1,4 +1,4 @@
-# 插件：用THUCAL轻松导出清华本科生课程表！
+# [THUCAL2][repo]: 导出清华本科生课程表
 _by [smilekzs][]_
 
 ##特点
@@ -33,7 +33,7 @@ http://userscripts.org/scripts/show/159785
 2. 点右上角多出的`THUCAL`按钮  
    ![][step2-1]  
 
-3. 下方出现提示，若成功，浏览器会下载一个`thucal-xxxx-xxxx-x.ics`文件，即为导出的日历  
+3. 下方出现提示，若成功，浏览器会下载一个`thucal-xxxx-xxxx-x.ics`文件(FireFox可能会出现其他的名字，不要紧)，即为导出的日历  
    ![][step3-1]  
 
 4. 将该文件导入支持iCalendar格式的日历app中。如：[Google Calendar导入日历][gcal1]。  
@@ -41,7 +41,7 @@ http://userscripts.org/scripts/show/159785
 
 ##问题反馈
 
-大家使用中如果遇到什么问题，欢迎在原日志/[github][issue]与我讨论～
+大家使用中如果遇到什么问题，欢迎在原日志下或[github][issue]与我讨论～
 
 [smilekzs]: https://github.com/smilekzs
 [repo]: https://github.com/smilekzs/thucal2
