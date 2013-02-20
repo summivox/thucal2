@@ -2,10 +2,10 @@
 // vim: nowrap
 // Copyright (c) 2013, smilekzs. (MIT Licensed)
 // ==UserScript==
-// @name          test
+// @name          thucal2
 // @namespace     http://github.com/smilekzs
 // @version       0.2.0
-// @description   thucal
+// @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
 

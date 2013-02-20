@@ -47,10 +47,10 @@
 // vim: nowrap
 // Copyright (c) 2013, smilekzs. (MIT Licensed)
 // ==UserScript==
-// @name          test
+// @name          thucal2
 // @namespace     http://github.com/smilekzs
 // @version       0.2.0
-// @description   thucal
+// @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
 
@@ -456,7 +456,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k, {
         parent: ___iced_passed_deferral,
-        filename: "test.user.iced",
+        filename: "thucal2.user.iced",
         funcname: "get_L"
       });
       GM_xmlhttpRequest({
@@ -493,7 +493,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "test.user.iced",
+          filename: "thucal2.user.iced",
           funcname: "get_L"
         });
         GM_xmlhttpRequest({
@@ -563,7 +563,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "test.user.iced",
+          filename: "thucal2.user.iced",
           funcname: "make"
         });
         get_L(__iced_deferrals.defer({
