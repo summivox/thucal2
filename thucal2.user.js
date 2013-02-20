@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.1
+// @version       0.2.2
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -588,9 +588,14 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
           _this.ui.log('分析错误：' + e.toString());
           return console.error(e);
         }
-        ret = ical.make(Gr, Gl, origin);
-        download(ret, "thucal-" + term + ".ics");
-        return _this.ui.log('导出成功！');
+        try {
+          ret = ical.make(Gr, Gl, origin);
+          download(ret, "thucal-" + term + ".ics");
+          return _this.ui.log('导出成功！');
+        } catch (e) {
+          _this.ui.log('导出错误：' + e.toString());
+          return console.error(e);
+        }
       });
     };
     return this;

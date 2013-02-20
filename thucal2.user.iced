@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.1
+// @version       0.2.2
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -411,10 +411,14 @@ window.thucal=thucal=new ->
       @ui.log '分析错误：'+e.toString()
       return console.error e
 
-    ret=ical.make(Gr, Gl, origin)
-    #console.log ret
-    download(ret, "thucal-#{term}.ics")
-    @ui.log '导出成功！'
+    try
+      ret=ical.make(Gr, Gl, origin)
+      #console.log ret
+      download(ret, "thucal-#{term}.ics")
+      @ui.log '导出成功！'
+    catch e
+      @ui.log '导出错误：'+e.toString()
+      return console.error e
   this
 
 $(document).ready(->thucal.init())
