@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.0
+// @version       0.2.1
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -264,7 +264,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
           loc = parseRegLoc(infoStr);
           _ref = period[p], beginT = _ref.beginT, endT = _ref.endT;
           return Gr[z][p].push({
-            name: this.innerText.trim(),
+            name: this.textContent.trim(),
             infoStr: infoStr,
             loc: loc,
             labName: '',
@@ -275,7 +275,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
         });
         cell.find('a.blue_red_none').each(function() {
           var beginT, endT, infoStr, labName, loc, t, _ref, _ref1;
-          infoStr = this.nextElementSibling.innerText.trim();
+          infoStr = this.nextElementSibling.textContent.trim();
           _ref = parseLabInfo(infoStr), labName = _ref.labName, loc = _ref.loc;
           if ((t = parseTimeStr(infoStr)) != null) {
             beginT = t.beginT, endT = t.endT;
@@ -283,7 +283,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
             _ref1 = period[p], beginT = _ref1.beginT, endT = _ref1.endT;
           }
           return Gl[z][p].push({
-            name: this.innerText.trim(),
+            name: this.textContent.trim(),
             infoStr: infoStr,
             loc: loc,
             labName: labName,

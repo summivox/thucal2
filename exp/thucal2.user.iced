@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.0
+// @version       0.2.1
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -163,7 +163,7 @@ window.parse_G=parse_G=(root)->
         loc=parseRegLoc(infoStr)
         {beginT, endT}=period[p]
         Gr[z][p].push {
-          name    : @innerText.trim()
+          name    : @textContent.trim()
           infoStr
           loc
           labName : ''
@@ -175,14 +175,14 @@ window.parse_G=parse_G=(root)->
 
       # lab
       cell.find('a.blue_red_none').each(->
-        infoStr=@nextElementSibling.innerText.trim()
+        infoStr=@nextElementSibling.textContent.trim()
         {labName, loc}=parseLabInfo(infoStr)
         if (t=parseTimeStr(infoStr))?
           {beginT, endT}=t
         else
           {beginT, endT}=period[p]
         Gl[z][p].push {
-          name    : @innerText.trim()
+          name    : @textContent.trim()
           infoStr
           loc
           labName
