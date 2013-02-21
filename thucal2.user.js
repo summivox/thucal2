@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.3
+// @version       0.2.4
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -317,6 +317,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
     lastItems = lastDay.items;
     lastItem = lastItems[lastItems.length - 1];
     z = lastDay.ymd.day();
+    if (z === 0) z = 7;
     maxW = 0;
     for (p = _i = 6; _i >= 1; p = _i += -1) {
       _ref = Gr[z][p];
@@ -494,7 +495,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return resp = arguments[0];
             };
           })(),
-          lineno: 356
+          lineno: 357
         }),
         onerror: function(err) {
           thucal.ui.log(ERR_MSG_LIST);
@@ -535,7 +536,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
                 return resp = arguments[0];
               };
             })(),
-            lineno: 378
+            lineno: 379
           }),
           onerror: function(err) {
             thucal.ui.log(ERR_MSG_LIST);
@@ -598,7 +599,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return Lraw = arguments[0];
             };
           })(),
-          lineno: 419
+          lineno: 420
         }));
         __iced_deferrals._fulfill();
       })(function() {

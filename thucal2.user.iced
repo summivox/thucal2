@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.3
+// @version       0.2.4
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -207,6 +207,7 @@ window.getOrigin=getOrigin=(Gr, L)->
   lastItems=lastDay.items
   lastItem=lastItems[lastItems.length-1]
   z=lastDay.ymd.day()
+  if z==0 then z=7 # moment.day() returns 0 for Sunday
 
   maxW=0
   for p in [6..1] by -1
