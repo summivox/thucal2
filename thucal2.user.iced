@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.2
+// @version       0.2.3
 // @description   Export Tsinghua University undergraduate curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // ==/UserScript==
@@ -27,6 +27,12 @@ window.buildArray=buildArray=(dims...)->
     for i in [0...d] by 1
       a[i]=buildArray(dims...)
   a
+
+window.cmp=cmp=(a, b)->
+  switch
+    when a<b then -1
+    when a>b then +1
+    else 0
 
 window.inferYear=inferYear=(termIdP, m, d)->
   md=moment().month(m-1).date(d)
@@ -308,16 +314,29 @@ window.ical=ical=new ->
     ret=[]
     for z in [1..7] by 1
       d1=origin.clone().add(z-1, 'days')
+      bin=[]
+      seq=0
       for p in [1..6] by 1
         for gi in G[z][p]
-          ret.push @template ICAL_EVENT,
+          bin.push {
+            seq   : seq++
             name  : @escape @nameStr gi
             loc   : @escape gi.loc
             desc  : @escape gi.infoStr
             start : @dateStr(d1, gi.beginT)
             end   : @dateStr(d1, gi.endT  )
             ex    : @makeEx(d1, gi)
-    ret.join('')
+          }
+      # remove duplicate entries within a day
+      ret=ret.concat bin.sort((a, b)->
+        cmp(a.name, b.name)||cmp(a.start, b.start)
+      ).filter((x, i, a)->
+        xp=a[i-1]
+        i==0 || x.name!=xp.name || x.start!=xp.start || x.end!=xp.end
+      ).sort((a, b)->
+        a.seq-b.seq
+      )
+    ret.map((x)=>@template ICAL_EVENT, x).join('')
   @make=(Gr, Gl, origin)->
     return ICAL_HEADER+@makeG(Gr, origin)+@makeG(Gl, origin)+ICAL_FOOTER
   this

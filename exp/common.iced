@@ -11,6 +11,12 @@ window.buildArray=buildArray=(dims...)->
       a[i]=buildArray(dims...)
   a
 
+window.cmp=cmp=(a, b)->
+  switch
+    when a<b then -1
+    when a>b then +1
+    else 0
+
 window.inferYear=inferYear=(termIdP, m, d)->
   md=moment().month(m-1).date(d)
   th=moment().month(5-1).date(1)
