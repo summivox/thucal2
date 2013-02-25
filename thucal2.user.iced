@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.0
+// @version       0.3.1
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -277,6 +277,7 @@ DTEND;TZID=Asia/Shanghai:<end>
 RRULE:FREQ=WEEKLY;COUNT=16
 <ex>
 SEQUENCE:0
+TRANSP:OPAQUE
 STATUS:CONFIRMED
 END:VEVENT
 
@@ -285,15 +286,27 @@ ICAL_EX="""
 EXDATE;TZID=Asia/Shanghai:<date>
 
 """
+ICAL_WEEK="""
+BEGIN:VEVENT
+SUMMARY:<name>
+DTSTART;VALUE=DATE:<start>
+DTEND;VALUE=DATE:<end>
+SEQUENCE:0
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+END:VEVENT
+
+"""
 window.ical=ical=new ->
   @escape=(s)->
     s.replace(/,/g, '\\,')
   @template=(tmpl, obj)->
     ret=tmpl
     for k, v of obj
-      ret=ret.replace(RegExp('<'+k+'>'), v)
+      ret=ret.replace(RegExp('<'+k+'>', 'g'), v)
     ret
-  @dateStr=(base, offset)->
+  @dateStr=(m)->m.format('YYYYMMDD')
+  @timeStr=(base, offset)->
     base.clone().add(offset).format('YYYYMMDD[T]HHmmss')
   @nameStr=(gi)->
     ret=gi.name
@@ -310,7 +323,7 @@ window.ical=ical=new ->
     for i in [1..16] by 1
       if exclude[i]
         ret.push @template ICAL_EX,
-          date: @dateStr(d1.clone().add(i-1, 'weeks'), gi.beginT)
+          date: @timeStr(d1.clone().add(i-1, 'weeks'), gi.beginT)
     ret.join('')
   @makeG=(G, origin)->
     ret=[]
@@ -325,8 +338,8 @@ window.ical=ical=new ->
             name  : @escape @nameStr gi
             loc   : @escape gi.loc
             desc  : @escape gi.infoStr
-            start : @dateStr(d1, gi.beginT)
-            end   : @dateStr(d1, gi.endT  )
+            start : @timeStr(d1, gi.beginT)
+            end   : @timeStr(d1, gi.endT  )
             ex    : @makeEx(d1, gi)
           }
       # remove duplicate entries within a day
@@ -339,8 +352,23 @@ window.ical=ical=new ->
         a.seq-b.seq
       )
     ret.map((x)=>@template ICAL_EVENT, x).join('')
+  @makeW=(origin, nameFactory)->
+    (for w in [1..16] by 1
+      start=origin.clone().add(w-1, 'weeks')
+      end=start.clone().add(1, 'days')
+      @template ICAL_WEEK, {
+        name  : @escape nameFactory w
+        start : @dateStr start
+        end   : @dateStr end
+      }
+    ).join('')
+
   @make=(Gr, Gl, origin)->
-    return ICAL_HEADER+@makeG(Gr, origin)+@makeG(Gl, origin)+ICAL_FOOTER
+    return ICAL_HEADER+
+      @makeG(Gr, origin)+
+      @makeG(Gl, origin)+
+      @makeW(origin, (w)->"第#{w}周")+
+      ICAL_FOOTER
   this
 
 
