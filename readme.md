@@ -1,11 +1,14 @@
-# [THUCAL2][repo]: 导出清华本科生课程表
+# [THUCAL2][repo]: 导出清华课程表
 _by [smilekzs][]_
+
+    最新版本: 0.3.0 
 
 ##特点
 
 * 完美解决各种不规则时间课程问题（实验课，1大节3小节课，等等）
-* 直接生成iCalendar文件，方便导入各种日历app
+* 直接生成iCalendar文件，方便导入各种日历app（Google日历，Hotmail日历，苹果日历……）
 * 导出工作完全本地完成，不泄露隐私
+* **现在同时支持本科生和研究生**
 
 ##效果
 
@@ -22,10 +25,10 @@ _by [smilekzs][]_
 [NinjaKit]: http://ss-o.net/safari/extension/NinjaKit.safariextz
 [GreaseMonkey]: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
 
-安装完成后，即可下载安装本userscript：  
+安装完成后，即可[下载安装本userscript](http://rrurl.cn/6Skb1h)：  
 http://userscripts.org/scripts/show/159785
 
-##使用方法
+##使用方法（以本科生为例，研究生类似）
 
 1. 登录info，打开选课系统，点`整体课表`  
    ![][step1-1]  

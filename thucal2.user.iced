@@ -4,9 +4,10 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.2.4
-// @description   Export Tsinghua University undergraduate curriculum to iCalendar
+// @version       0.3.0
+// @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
+// @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
 // ==/UserScript==
 
 //#include
@@ -345,7 +346,7 @@ window.ical=ical=new ->
 
 ############
 ## I/O
-window.L_URL=L_URL='http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
+
 ERR_MSG_LIST='list错误：检查是否已登录http://info.tsinghua.edu.cn/'
 window.stringify=stringify=(p)->
   (for k, v of p
@@ -353,7 +354,7 @@ window.stringify=stringify=(p)->
   ).join('&')
 window.get_L=get_L=(autocb)->
   await GM_xmlhttpRequest {
-    url: L_URL + '?m=bks_jxrl_all'
+    url: thucal.params.listUrl + '?m=' + thucal.params.listVerb
     method: 'GET'
     onload: defer(resp)
     onerror: (err)->
@@ -364,15 +365,15 @@ window.get_L=get_L=(autocb)->
     thucal.ui.log ERR_MSG_LIST
     throw Error 'get_L: no token: response does not contain token'
   params=
-    'm': 'bks_jxrl_all'
-    'role': 'bks'
+    'm': thucal.params.listVerb
+    'role': thucal.params.listRole
     'grrlID': ''
     'displayType': ''
     'token': match[1]
     'p_start_date': moment().format('YYYYMMDD')
     'p_end_date': moment().add(1, 'years').format('YYYYMMDD')
   await GM_xmlhttpRequest {
-    url: L_URL
+    url: thucal.params.listUrl
     method: 'POST'
     headers:
       "Content-Type": "application/x-www-form-urlencoded"
@@ -392,6 +393,9 @@ window.download=download=(cont, name)->
 ## userscript logic
 window.thucal=thucal=new ->
   @init=->
+
+    ## ui
+
     @ui={}
     # button
     $('input[name="export2"]').before("""
@@ -399,6 +403,7 @@ window.thucal=thucal=new ->
     """)
     @ui.button=$('#thucal_button')
     @ui.button.on 'click', =>@make()
+    # log
     $('#a1_1').parentsUntil('form').last().after("""
       <pre><code id="thucal_status" style="
         font-size: 10pt;
@@ -408,6 +413,19 @@ window.thucal=thucal=new ->
     """)
     @ui.status=$('#thucal_status')
     @ui.log=(s)->@status.append(s+'\n')
+
+    ## params
+
+    if document.location.toString().match(/Yjs/)
+      @params=
+        listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
+        listVerb: 'yjs_jxrl_all'
+        listRole: 'yjs'
+    else
+      @params=
+        listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
+        listVerb: 'bks_jxrl_all'
+        listRole: 'bks'
 
   @make=->
     @ui.log "******THUCAL********"
