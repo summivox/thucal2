@@ -1,7 +1,7 @@
 # [THUCAL2][repo]: 导出清华课程表
 _by [smilekzs][]_
 
-    最新版本: 0.3.1
+    最新版本: 0.3.2
 
 ##特点
 
@@ -17,12 +17,13 @@ _by [smilekzs][]_
 ##下载 安装
 
 * Chrome：先安装[TamperMonkey][]环境
-* Safari：先安装[NinjaKit][]环境
+* Mac/Safari：先安装[NinjaKit][]环境 **(需要手动安装脚本，见NinjaKit说明)**
 * Firefox: 先安装[GreaseMonkey][]环境
 * 其他: <sub>我可以无耻地推荐大家用Chrome么（逃</sub>
 
 [TamperMonkey]: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo
 [NinjaKit]: http://ss-o.net/safari/extension/NinjaKit.safariextz
+[GreaseKit]: http://8-p.info/greasekit/
 [GreaseMonkey]: https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
 
 安装完成后，即可[下载安装本userscript](http://rrurl.cn/6Skb1h)：  
