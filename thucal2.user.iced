@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.3
+// @version       0.3.5
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -119,6 +119,7 @@ parse_L=(root, termIdP)->
       {
         beginT: getTOffset(moment(fields[0], 'HHmm'))
         endT  : getTOffset(moment(fields[1], 'HHmm'))
+        cat   : fields[2]
         name  : fields[3]
         loc   : fields[4]
       }
@@ -221,7 +222,7 @@ getOrigin=(Gr, Gl, L)->
 
   lastDay.ymd.clone().subtract(maxW-1, 'weeks').subtract(z-1, 'days')
 
-combine=(Gr, L, origin)->
+combine=(Gr, L, cat, origin)->
   # re-map L to Lrel[day-since-origin]
   Lrel=[]
   for x in L
@@ -235,7 +236,7 @@ combine=(Gr, L, origin)->
         w=w[w.length-1]
         rel=(w-1)*7+(z-1)
         if (bin=Lrel[rel]) then for li in bin
-          if !li.matched && li.name==gi.name
+          if !li.matched && li.cat==cat && li.name==gi.name
             li.matched=true
             gi.beginT=li.beginT
             gi.endT=li.endT
@@ -475,8 +476,8 @@ unsafeWindow.thucal=thucal=new ->
       L=parse_L(Lraw, termIdP)
       {Gr, Gl}=parse_G($(document))
       origin=getOrigin(Gr, Gl, L)
-      combine(Gr, L, origin)
-      combine(Gl, L, origin)
+      combine(Gr, L, '上课', origin)
+      combine(Gl, L, '实验', origin)
       @ui.log '分析完成'
     catch e
       @ui.log '分析错误：'+e.toString()

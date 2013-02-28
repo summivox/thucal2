@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.3
+// @version       0.3.5
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -229,6 +229,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
         return {
           beginT: getTOffset(moment(fields[0], 'HHmm')),
           endT: getTOffset(moment(fields[1], 'HHmm')),
+          cat: fields[2],
           name: fields[3],
           loc: fields[4]
         };
@@ -339,7 +340,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
     return lastDay.ymd.clone().subtract(maxW - 1, 'weeks').subtract(z - 1, 'days');
   };
 
-  combine = function(Gr, L, origin) {
+  combine = function(Gr, L, cat, origin) {
     var Lrel, bin, gi, li, p, rel, w, x, z, _i, _j, _k, _l, _len, _len1, _len2, _m, _ref;
     Lrel = [];
     for (_i = 0, _len = L.length; _i < _len; _i++) {
@@ -357,7 +358,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
           if ((bin = Lrel[rel])) {
             for (_m = 0, _len2 = bin.length; _m < _len2; _m++) {
               li = bin[_m];
-              if (!li.matched && li.name === gi.name) {
+              if (!li.matched && li.cat === cat && li.name === gi.name) {
                 li.matched = true;
                 gi.beginT = li.beginT;
                 gi.endT = li.endT;
@@ -525,7 +526,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return resp = arguments[0];
             };
           })(),
-          lineno: 389
+          lineno: 390
         }),
         onerror: function(err) {
           thucal.ui.log(ERR_MSG_LIST);
@@ -566,7 +567,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
                 return resp = arguments[0];
               };
             })(),
-            lineno: 411
+            lineno: 412
           }),
           onerror: function(err) {
             thucal.ui.log(ERR_MSG_LIST);
@@ -647,7 +648,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return Lraw = arguments[0];
             };
           })(),
-          lineno: 470
+          lineno: 471
         }));
         __iced_deferrals._fulfill();
       })(function() {
@@ -657,8 +658,8 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
           L = parse_L(Lraw, termIdP);
           _ref = parse_G($(document)), Gr = _ref.Gr, Gl = _ref.Gl;
           origin = getOrigin(Gr, Gl, L);
-          combine(Gr, L, origin);
-          combine(Gl, L, origin);
+          combine(Gr, L, '上课', origin);
+          combine(Gl, L, '实验', origin);
           _this.ui.log('分析完成');
         } catch (e) {
           _this.ui.log('分析错误：' + e.toString());
