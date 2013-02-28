@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.2
+// @version       0.3.3
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
