@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.5
+// @version       0.3.7
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -169,15 +169,14 @@ parse_G=(root)->
       cell.find('a.mainHref').each(->
         infoStr=@nextSibling.data.trim()
         loc=parseRegLoc(infoStr)
-        {beginT, endT}=period[p]
         Gr[z][p].push {
           name    : @textContent.trim()
           infoStr
           loc
           labName : ''
           week    : parseWeekStr(infoStr)
-          beginT
-          endT
+          beginT  : null # default
+          endT    : null
         }
       )
 
@@ -188,7 +187,7 @@ parse_G=(root)->
         if (t=parseTimeStr(infoStr))?
           {beginT, endT}=t
         else
-          {beginT, endT}=period[p]
+          beginT=endT=null # default
         Gl[z][p].push {
           name    : @textContent.trim()
           infoStr
@@ -222,27 +221,29 @@ getOrigin=(Gr, Gl, L)->
 
   lastDay.ymd.clone().subtract(maxW-1, 'weeks').subtract(z-1, 'days')
 
-combine=(Gr, L, cat, origin)->
+combine=(G, L, cat, origin)->
   # re-map L to Lrel[day-since-origin]
   Lrel=[]
   for x in L
     Lrel[x.ymd.diff(origin, 'days')]=x.items
 
-  # override G-side attributes with L-side equivalent (if available)
+  # priority: G-side > L-side > default
   for z in [1..7] by 1
     for p in [1..6] by 1
-      for gi in Gr[z][p]
+      for gi in G[z][p]
         w=gi.week
         w=w[w.length-1]
         rel=(w-1)*7+(z-1)
         if (bin=Lrel[rel]) then for li in bin
           if !li.matched && li.cat==cat && li.name==gi.name
             li.matched=true
-            gi.beginT=li.beginT
-            gi.endT=li.endT
+            gi.beginT||=li.beginT # G > L
+            gi.endT  ||=li.endT
             gi.loc=li.loc
             break
-  Gr
+        gi.beginT||=period[p].beginT # L > default
+        gi.endT  ||=period[p].endT
+  G
 
 
 ############
@@ -461,7 +462,7 @@ unsafeWindow.thucal=thucal=new ->
         listRole: 'bks'
 
   @make=->
-    @ui.log "******THUCAL********"
+    @ui.log "******THUCAL2******"
     termIdP=parseTermId($('input[name=p_xnxq]').val())
     term=printTermId(termIdP)
     @ui.log '学期：'+term
