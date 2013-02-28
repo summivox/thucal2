@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.1
+// @version       0.3.2
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -16,7 +16,7 @@
 
 ############
 ## common
-window.buildArray=buildArray=(dims...)->
+buildArray=(dims...)->
   if !(dims?.length) then return null
   d=dims?.shift()
   if d.length?
@@ -29,13 +29,13 @@ window.buildArray=buildArray=(dims...)->
       a[i]=buildArray(dims...)
   a
 
-window.cmp=cmp=(a, b)->
+cmp=(a, b)->
   switch
     when a<b then -1
     when a>b then +1
     else 0
 
-window.inferYear=inferYear=(termIdP, m, d)->
+inferYear=(termIdP, m, d)->
   md=moment().month(m-1).date(d)
   th=moment().month(5-1).date(1)
   if termIdP.termN==1 && md.isAfter th
@@ -44,9 +44,9 @@ window.inferYear=inferYear=(termIdP, m, d)->
     y=termIdP.endY
   moment([y, m-1, d])
 
-window.getTOffset=getTOffset=(t)->t.clone().diff(t.clone().startOf('day'))
+getTOffset=(t)->t.clone().diff(t.clone().startOf('day'))
 
-window.period=period=[
+period=[
   "00:00" # placeholder
   "08:00" #1
   "09:50" #2
@@ -62,7 +62,7 @@ window.period=period=[
   }
 )
 
-window.parseTermId=parseTermId=(termId)->
+parseTermId=(termId)->
   if !(match=/(\d{4})-(\d{4})-(\d)/.exec termId)? then return null
   {
     beginY: parseInt match[1]
@@ -70,7 +70,7 @@ window.parseTermId=parseTermId=(termId)->
     termN : parseInt match[3]
   }
 
-window.printTermId=(termIdP)->
+printTermId=(termIdP)->
   termIdP.beginY+'-'+termIdP.endY+'-'+(
     switch termIdP.termN
       when 1 then '秋'
@@ -78,14 +78,14 @@ window.printTermId=(termIdP)->
       else '不科学'
   )
 
-window.parseTimeStr=parseTimeStr=(infoStr)->
+parseTimeStr=(infoStr)->
   if !(match=/时间(\d{1,2}:\d{1,2})-(\d{1,2}:\d{1,2})/.exec(infoStr))? then return null
   {
     beginT: getTOffset(moment(match[1], 'HHmm'))
     endT  : getTOffset(moment(match[2], 'HHmm'))
   }
 
-window.parseWeekStr=parseWeekStr=(weekStr)->
+parseWeekStr=(weekStr)->
   if !(part=/(([\d,-]+)|全|前八|后八|单|双)周/.exec(weekStr)) then return null
   switch part[1].charAt(0)
     when '全' then return [1..16]
@@ -107,7 +107,7 @@ window.parseWeekStr=parseWeekStr=(weekStr)->
 
 ############
 ## parse_L
-window.parse_L=parse_L=(root, termIdP)->
+parse_L=(root, termIdP)->
   days=root.find('td.doc_title').map(->
     if !(match=/(\d+)月(\d+)日/.exec @innerHTML)? then throw Error @innerHTML
     md=inferYear(termIdP, parseInt(match[1]), parseInt(match[2]))
@@ -128,7 +128,7 @@ window.parse_L=parse_L=(root, termIdP)->
 
 ############
 ## parse_G
-window.parseRegLoc=(infoStr)->
+parseRegLoc=(infoStr)->
   infoStr.match(///
     [\(；] # last delimiter
     ( #1
@@ -137,7 +137,7 @@ window.parseRegLoc=(infoStr)->
     \)$
   ///)?[1]
 
-window.parseLabInfo=(infoStr)->
+parseLabInfo=(infoStr)->
   if (match=infoStr.match(///
     ( #1
       .* # everything before the last parens pair => labName
@@ -155,7 +155,7 @@ window.parseLabInfo=(infoStr)->
     labName: ''
     loc: ''
 
-window.parse_G=parse_G=(root)->
+parse_G=(root)->
   Gr=buildArray([1..7], [1..6])
   Gl=buildArray([1..7], [1..6])
   for z in [1..7] by 1
@@ -203,7 +203,7 @@ window.parse_G=parse_G=(root)->
 
 ############
 ## combine
-window.getOrigin=getOrigin=(Gr, L)->
+getOrigin=(Gr, Gl, L)->
   lastDay=L[L.length-1]
   lastItems=lastDay.items
   lastItem=lastItems[lastItems.length-1]
@@ -215,10 +215,13 @@ window.getOrigin=getOrigin=(Gr, L)->
     for it in Gr[z][p]
       if it.name==lastItem.name && (w=it.week[it.week.length-1])>maxW
         maxW=w
+    for it in Gl[z][p]
+      if it.name==lastItem.name && (w=it.week[it.week.length-1])>maxW
+        maxW=w
 
   lastDay.ymd.clone().subtract(maxW-1, 'weeks').subtract(z-1, 'days')
 
-window.combine=combine=(Gr, L, origin)->
+combine=(Gr, L, origin)->
   # re-map L to Lrel[day-since-origin]
   Lrel=[]
   for x in L
@@ -297,7 +300,7 @@ STATUS:CONFIRMED
 END:VEVENT
 
 """
-window.ical=ical=new ->
+ical=new ->
   @escape=(s)->
     s.replace(/,/g, '\\,')
   @template=(tmpl, obj)->
@@ -376,11 +379,11 @@ window.ical=ical=new ->
 ## I/O
 
 ERR_MSG_LIST='list错误：检查是否已登录http://info.tsinghua.edu.cn/'
-window.stringify=stringify=(p)->
+stringify=(p)->
   (for k, v of p
     (encodeURIComponent(k) + '=' + encodeURIComponent(v))
   ).join('&')
-window.get_L=get_L=(autocb)->
+get_L=(autocb)->
   await GM_xmlhttpRequest {
     url: thucal.params.listUrl + '?m=' + thucal.params.listVerb
     method: 'GET'
@@ -412,14 +415,15 @@ window.get_L=get_L=(autocb)->
       throw Error('get_L: post error: ' + err.toString())
   }
   $(resp.responseText).filter('a')
-window.download=download=(cont, name)->
+download=(cont, name)->
   b=new Blob([cont], {type: 'text/calendar'})
   saveAs(b, name)
 
 
 ############
 ## userscript logic
-window.thucal=thucal=new ->
+unsafeWindow.thucal=thucal=new ->
+  @lib={$, moment, saveAs}
   @init=->
 
     ## ui
@@ -470,8 +474,9 @@ window.thucal=thucal=new ->
     try
       L=parse_L(Lraw, termIdP)
       {Gr, Gl}=parse_G($(document))
-      origin=getOrigin(Gr, L)
+      origin=getOrigin(Gr, Gl, L)
       combine(Gr, L, origin)
+      combine(Gl, L, origin)
       @ui.log '分析完成'
     catch e
       @ui.log '分析错误：'+e.toString()
