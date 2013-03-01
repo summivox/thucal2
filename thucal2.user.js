@@ -407,6 +407,10 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
   ICAL_WEEK = "BEGIN:VEVENT\nSUMMARY:<name>\nDTSTART;VALUE=DATE:<start>\nDTEND;VALUE=DATE:<end>\nSEQUENCE:0\nUID:<uid>\nTRANSP:TRANSPARENT\nSTATUS:CONFIRMED\nEND:VEVENT\n";
 
   ical = new function() {
+    this.uidSeq = 0;
+    this.getUid = function() {
+      return (this.uidSeq++) + '.' + this.uidBase;
+    };
     this.escape = function(s) {
       return s.replace(/,/g, '\\,');
     };
@@ -472,7 +476,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               start: this.timeStr(d1, gi.beginT),
               end: this.timeStr(d1, gi.endT),
               ex: this.makeEx(d1, gi),
-              uid: this.uid
+              uid: this.getUid()
             });
           }
         }
@@ -502,14 +506,14 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
             name: this.escape(nameFactory(w)),
             start: this.dateStr(start),
             end: this.dateStr(end),
-            uid: this.uid
+            uid: this.getUid()
           }));
         }
         return _results;
       }).call(this)).join('');
     };
     this.make = function(Gr, Gl, origin) {
-      this.uid = moment().unix() + '@thucal';
+      this.uidBase = moment().unix() + '@thucal';
       return ICAL_HEADER + this.makeG(Gr, origin) + this.makeG(Gl, origin) + this.makeW(origin, function(w) {
         return "第" + w + "周";
       }) + ICAL_FOOTER;
@@ -552,7 +556,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return resp = arguments[0];
             };
           })(),
-          lineno: 401
+          lineno: 403
         }),
         onerror: function(err) {
           thucal.ui.log(ERR_MSG_LIST);
@@ -593,7 +597,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
                 return resp = arguments[0];
               };
             })(),
-            lineno: 423
+            lineno: 425
           }),
           onerror: function(err) {
             thucal.ui.log(ERR_MSG_LIST);
@@ -674,7 +678,7 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
               return Lraw = arguments[0];
             };
           })(),
-          lineno: 482
+          lineno: 484
         }));
         __iced_deferrals._fulfill();
       })(function() {

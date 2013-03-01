@@ -310,6 +310,8 @@ END:VEVENT
 
 """
 ical=new ->
+  @uidSeq=0
+  @getUid=->(@uidSeq++)+'.'+@uidBase
   @escape=(s)->
     s.replace(/,/g, '\\,')
   @template=(tmpl, obj)->
@@ -353,7 +355,7 @@ ical=new ->
             start : @timeStr(d1, gi.beginT)
             end   : @timeStr(d1, gi.endT  )
             ex    : @makeEx(d1, gi)
-            uid   : @uid
+            uid   : @getUid()
           }
       # remove duplicate entries within a day
       ret=ret.concat bin.sort((a, b)->
@@ -373,12 +375,12 @@ ical=new ->
         name  : @escape nameFactory w
         start : @dateStr start
         end   : @dateStr end
-        uid   : @uid
+        uid   : @getUid()
       }
     ).join('')
 
   @make=(Gr, Gl, origin)->
-    @uid=moment().unix()+'@thucal'
+    @uidBase=moment().unix()+'@thucal'
     ICAL_HEADER+
     @makeG(Gr, origin)+
     @makeG(Gl, origin)+
