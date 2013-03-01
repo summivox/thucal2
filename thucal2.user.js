@@ -49,7 +49,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.7
+// @version       0.3.8
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -244,12 +244,12 @@ window.saveAs=window.saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(nav
 
   parseRegLoc = function(infoStr) {
     var _ref;
-    return (_ref = infoStr.match(/[\(；]([^\(；]+)\)$/)) != null ? _ref[1] : void 0;
+    return (_ref = infoStr.match(/[\(；]([^\(\)；]+)\)$/)) != null ? _ref[1] : void 0;
   };
 
   parseLabInfo = function(infoStr) {
     var match;
-    if ((match = infoStr.match(/(.*)\(([^\)；]+).*\)$/)) != null) {
+    if ((match = infoStr.match(/(.*)\(([^\(\)；]+).*\)$/)) != null) {
       return {
         labName: match[1].trim(),
         loc: match[2].trim()

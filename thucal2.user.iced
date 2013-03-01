@@ -4,7 +4,7 @@
 // ==UserScript==
 // @name          thucal2
 // @namespace     http://github.com/smilekzs
-// @version       0.3.7
+// @version       0.3.8
 // @description   Export Tsinghua University curriculum to iCalendar
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
@@ -133,7 +133,7 @@ parseRegLoc=(infoStr)->
   infoStr.match(///
     [\(；] # last delimiter
     ( #1
-      [^\(；]+ # location (no delimeter)
+      [^\(\)；]+ # location (no delimeter)
     )
     \)$
   ///)?[1]
@@ -145,7 +145,7 @@ parseLabInfo=(infoStr)->
     )
     \(
     ( #2
-      [^\)；]+ # first field in parens => loc
+      [^\(\)；]+ # first field in parens => loc
     )
     .* # ignore the rest
     \)$
