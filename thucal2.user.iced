@@ -138,23 +138,25 @@ parseRegLoc=(infoStr)->
     \)$
   ///)?[1]
 
+# lab information: name, location
+# beware nasty cases:
+#   name(loc(loc)；...)
+#   (name)name( loc；...)
+# use manual parsing
 parseLabInfo=(infoStr)->
-  if (match=infoStr.match(///
-    ( #1
-      .* # everything before the last parens pair => labName
-    )
-    \(
-    ( #2
-      [^\(\)；]+ # first field in parens => loc
-    )
-    .* # ignore the rest
-    \)$
-  ///))?
-    labName: match[1].trim()
-    loc: match[2].trim()
-  else
-    labName: ''
-    loc: ''
+  #locate parens matching last
+  i=infoStr.lastIndexOf(')')
+  if i==-1 then return {labName: '', loc: ''}
+  n=1
+  while n && i>0
+    switch infoStr[--i]
+      when '(' then n--
+      when ')' then n++
+  if i==0 then return {labName: '', loc: ''}
+  {
+    labName: infoStr[0...i]
+    loc: infoStr[i+1..].match(/([^；]*)；/)?[1]?.trim()
+  }
 
 parse_G=(root)->
   Gr=buildArray([1..7], [1..6])
@@ -221,14 +223,15 @@ getOrigin=(Gr, Gl, L)->
 
   lastDay.ymd.clone().subtract(maxW-1, 'weeks').subtract(z-1, 'days')
 
-combine=(G, L, cat, origin)->
-  # re-map L to Lrel[day-since-origin]
-  # TODO: refactor this out (since both Gr and Gl are matched with L now)
+# remap L to Lrel[day-since-origin]
+getLrel=(L, origin)->
   Lrel=[]
   for x in L
     Lrel[x.ymd.diff(origin, 'days')]=x.items
 
-  # priority: G-side > L-side > default
+# complete G using information from Lrel
+# time priority: G-side > L-side > default(neither G nor L displays time)
+combine=(G, Lrel, cat, origin)->
   for z in [1..7] by 1
     for p in [1..6] by 1
       for gi in G[z][p]
@@ -274,6 +277,7 @@ END:VCALENDAR
 
 """
 ICAL_EVENT="""
+
 BEGIN:VEVENT
 SUMMARY:<name>
 LOCATION:<loc>
@@ -283,6 +287,7 @@ DTEND;TZID=Asia/Shanghai:<end>
 RRULE:FREQ=WEEKLY;COUNT=16
 <ex>
 SEQUENCE:0
+UID:<uid>
 TRANSP:OPAQUE
 STATUS:CONFIRMED
 END:VEVENT
@@ -298,6 +303,7 @@ SUMMARY:<name>
 DTSTART;VALUE=DATE:<start>
 DTEND;VALUE=DATE:<end>
 SEQUENCE:0
+UID:<uid>
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 END:VEVENT
@@ -347,6 +353,7 @@ ical=new ->
             start : @timeStr(d1, gi.beginT)
             end   : @timeStr(d1, gi.endT  )
             ex    : @makeEx(d1, gi)
+            uid   : @uid
           }
       # remove duplicate entries within a day
       ret=ret.concat bin.sort((a, b)->
@@ -366,15 +373,17 @@ ical=new ->
         name  : @escape nameFactory w
         start : @dateStr start
         end   : @dateStr end
+        uid   : @uid
       }
     ).join('')
 
   @make=(Gr, Gl, origin)->
-    return ICAL_HEADER+
-      @makeG(Gr, origin)+
-      @makeG(Gl, origin)+
-      @makeW(origin, (w)->"第#{w}周")+
-      ICAL_FOOTER
+    @uid=moment().unix()+'@thucal'
+    ICAL_HEADER+
+    @makeG(Gr, origin)+
+    @makeG(Gl, origin)+
+    @makeW(origin, (w)->"第#{w}周")+
+    ICAL_FOOTER
   this
 
 
@@ -478,8 +487,9 @@ unsafeWindow.thucal=thucal=new ->
       L=parse_L(Lraw, termIdP)
       {Gr, Gl}=parse_G($(document))
       origin=getOrigin(Gr, Gl, L)
-      combine(Gr, L, '上课', origin)
-      combine(Gl, L, '实验', origin)
+      Lrel=getLrel(L, origin)
+      combine(Gr, Lrel, '上课', origin)
+      combine(Gl, Lrel, '实验', origin)
       @ui.log '分析完成'
     catch e
       @ui.log '分析错误：'+e.toString()
