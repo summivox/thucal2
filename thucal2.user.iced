@@ -223,6 +223,7 @@ getOrigin=(Gr, Gl, L)->
 
 combine=(G, L, cat, origin)->
   # re-map L to Lrel[day-since-origin]
+  # TODO: refactor this out (since both Gr and Gl are matched with L now)
   Lrel=[]
   for x in L
     Lrel[x.ymd.diff(origin, 'days')]=x.items
