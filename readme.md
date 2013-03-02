@@ -5,6 +5,10 @@ http://userscripts.org/scripts/show/159785
 
 Feel free to file a bug report here or at userscript.org!
 
+##Screenshot
+
+![][result]
+
 ##Main Features
 
 * Fully automated operation: only one click is needed
@@ -16,9 +20,17 @@ Feel free to file a bug report here or at userscript.org!
 * Standard iCalendar format for import into popular calendar apps
 * All processing done locally for the sake of privacy
 
-##Screenshot
+##Build
 
-![][result]
+THUCAL2 is built using [GRUNT](http://gruntjs.com).
+
+```
+npm install --global grunt-cli
+npm install
+grunt release
+```
+
+Use `dist/thucal2.user.js`
 
 ##Usage
 
