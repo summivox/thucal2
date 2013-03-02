@@ -33,8 +33,7 @@ module.exports = (grunt) ->
 //#include
 '''
       dist: {
-        #src: ['lib/FileSaver.min.js', 'lib/jquery-1.8.2.min.js', 'lib/moment.min.js', 'build/thucal2.js']
-        src: ['src/_include.js', 'build/thucal2.js']
+        src: ['lib/FileSaver.min.js', 'lib/jquery-1.8.2.min.js', 'lib/moment.min.gm.js', 'build/thucal2.js']
         dest: 'dist/thucal2.user.js'
       }
 
@@ -46,13 +45,6 @@ module.exports = (grunt) ->
     clean:
       build: ['build/*']
       release: ['dist/*']
-
-    connect:
-      debug:
-        options:
-          port: 9999
-          host: '127.0.0.1'
-          base: 'build'
 
   grunt.registerMultiTask 'iced', 'Compile IcedCoffeeScript files into JavaScript', ->
     path = require('path')
@@ -93,4 +85,4 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'debug', ['iced:debug']
   grunt.registerTask 'dev', ['debug', 'watch']
-  grunt.registerTask 'release', ['concat']
+  grunt.registerTask 'release', ['debug', 'concat']
