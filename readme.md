@@ -34,16 +34,16 @@ Use `dist/thucal2.user.js`
 
 ##Usage
 
-1. Log into http://info.tsinghua.edu.cn/
+1. Log into http://info.tsinghua.edu.cn/  
    ![][step1-1]  
 
-2. Click `THUCAL`
+2. Click `THUCAL`  
    ![][step2-1]  
 
-3. Successful: `.ics` file downloaded (file could be unnamed in FireFox due to browser restrictions)
+3. Successful: `.ics` file downloaded (file could be unnamed in FireFox due to browser restrictions)  
    ![][step3-1]  
 
-4. Import file into calendar app
+4. Import file into calendar app  
    ![][step4-1]  
 
 ##License
