@@ -33,8 +33,7 @@ module.exports = (grunt) ->
 //#include
 '''
       dist: {
-        #src: ['lib/FileSaver.min.js', 'lib/jquery-1.8.2.min.js', 'lib/moment.min.js', 'build/thucal2.js']
-        src: ['src/_include.js', 'build/thucal2.js']
+        src: ['lib/FileSaver.min.js', 'lib/jquery-1.8.2.min.js', 'lib/moment.min.gm.js', 'build/thucal2.js']
         dest: 'dist/thucal2.user.js'
       }
 
