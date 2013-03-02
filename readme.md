@@ -1,4 +1,4 @@
-# THUCAL2: userscript for exporting Tsinghua University curriculum
+# THUCAL2: Smart curriculum exporter for Tsinghua University
 
 Latest stable release is hosted on userscript.org:  
 http://userscripts.org/scripts/show/159785
@@ -14,7 +14,7 @@ Feel free to file a bug report here or at userscript.org!
 * Fully automated operation: only one click is needed
     * Needs no "origin date" input
     * Automatically saves exported calendar (through HTML5 Blob)
-* Accurate data
+* Accurate results
     * Irregular timing (`09:50-12:15`, labs, ...)
     * Lab details (lab content, location, ...)
 * Standard iCalendar format for import into popular calendar apps
