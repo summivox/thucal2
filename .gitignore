@@ -1,1 +1,3 @@
-result/
+/node_modules
+/dist
+/build

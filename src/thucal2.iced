@@ -1,19 +1,3 @@
-`
-// vim: nowrap
-// Copyright (c) 2013, smilekzs. (MIT Licensed)
-// ==UserScript==
-// @name          thucal2
-// @namespace     http://github.com/smilekzs
-// @version       0.3.8
-// @description   Export Tsinghua University curriculum to iCalendar
-// @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
-// @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
-// ==/UserScript==
-
-//#include
-`
-
-
 ############
 ## common
 buildArray=(dims...)->
