@@ -138,8 +138,8 @@ parseLabInfo=(infoStr)->
       when ')' then n++
   if i==0 then return {labName: '', loc: ''}
   {
-    labName: infoStr[0...i]
-    loc: infoStr[i+1..].match(/([^；]*)；/)?[1]?.trim()
+    labName: infoStr[0...i] || ''
+    loc: infoStr[i+1..].match(/([^；]*)；/)?[1]?.trim() || ''
   }
 
 parse_G=(root)->
@@ -154,7 +154,7 @@ parse_G=(root)->
       # regular
       cell.find('a.mainHref').each(->
         infoStr=@nextSibling.data.trim()
-        loc=parseRegLoc(infoStr)
+        loc=parseRegLoc(infoStr) || ''
         Gr[z][p].push {
           name    : @textContent.trim()
           infoStr
