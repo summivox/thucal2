@@ -304,25 +304,23 @@ ical=new ->
     ret
   @makeRecur=(oz, gi)->
     ws=gi.week
+    l=ws.length
+
+    # no recurrence
+    if l==1 then return ''
+
+    # consecutive week range => use RRULE instead
     w0=ws[0]
-    wl=ws[ws.length-1]
+    wl=ws[l-1]
     n=wl-w0+1
-    if w0==wl then return ''
-    ruleStr=@template ICAL_XRULE, {x: 'R', n}
+    if l==n then return @template ICAL_XRULE, {x: 'R', n}
 
-    if ws.length==n then return ruleStr
-    exclude=new Array(16+1)
-    for i in [w0..wl] by 1
-      exclude[i]=true
-    for w in ws
-      exclude[w]=false
-    list=[]
-    for i in [w0..wl] by 1
-      if exclude[i]
-        list.push @timeStr(oz.clone().add(i-1, 'weeks'), gi.beginT)
-    dateStr=@template ICAL_XDATE, {x: 'EX', list: list.join(',')}
+    # else => use RDATE
+    # NOTE: some calendar implementation needs first "recurrence"
+    list=ws.map (i)=> 
+      @timeStr(oz.clone().add(i-1, 'weeks'), gi.beginT)
+    @template ICAL_XDATE, {x: 'R', list: list.join(',')}
 
-    return ruleStr+dateStr
   @makeG=(G, origin)->
     ret=[]
     for z in [1..7] by 1
