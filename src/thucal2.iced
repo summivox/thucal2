@@ -254,33 +254,25 @@ TZNAME:CST
 DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
-
 """
 ICAL_FOOTER="""
 END:VCALENDAR
-
 """
 ICAL_EVENT="""
-
 BEGIN:VEVENT
 SUMMARY:<name>
 LOCATION:<loc>
 DESCRIPTION:<desc>
 DTSTART;TZID=Asia/Shanghai:<start>
 DTEND;TZID=Asia/Shanghai:<end>
-RRULE:FREQ=WEEKLY;COUNT=16
-<ex>
-SEQUENCE:0
+<recur>SEQUENCE:0
 UID:<uid>
 TRANSP:OPAQUE
 STATUS:CONFIRMED
 END:VEVENT
-
 """
-ICAL_EX="""
-EXDATE;TZID=Asia/Shanghai:<date>
-
-"""
+ICAL_XRULE="<x>RULE:FREQ=WEEKLY;COUNT=<n>\n"
+ICAL_XDATE="<x>DATE;TZID=Asia/Shanghai:<list>\n"
 ICAL_WEEK="""
 BEGIN:VEVENT
 SUMMARY:<name>
@@ -291,7 +283,6 @@ UID:<uid>
 TRANSP:TRANSPARENT
 STATUS:CONFIRMED
 END:VEVENT
-
 """
 ical=new ->
   @uidSeq=0
@@ -311,34 +302,42 @@ ical=new ->
     if gi.labName
       ret+=' ['+gi.labName+']'
     ret
-  @makeEx=(d1, gi)->
-    exclude=new Array(16+1)
-    for i in [1..16] by 1
-      exclude[i]=true
-    for w in gi.week
-      exclude[w]=false
-    ret=[]
-    for i in [1..16] by 1
-      if exclude[i]
-        ret.push @template ICAL_EX,
-          date: @timeStr(d1.clone().add(i-1, 'weeks'), gi.beginT)
-    ret.join('')
+  @makeRecur=(oz, gi)->
+    ws=gi.week
+    l=ws.length
+
+    # no recurrence
+    if l==1 then return ''
+
+    # consecutive week range => use RRULE instead
+    w0=ws[0]
+    wl=ws[l-1]
+    n=wl-w0+1
+    if l==n then return @template ICAL_XRULE, {x: 'R', n}
+
+    # else => use RDATE
+    # NOTE: some calendar implementation needs first "recurrence"
+    list=ws.map (i)=> 
+      @timeStr(oz.clone().add(i-1, 'weeks'), gi.beginT)
+    @template ICAL_XDATE, {x: 'R', list: list.join(',')}
+
   @makeG=(G, origin)->
     ret=[]
     for z in [1..7] by 1
-      d1=origin.clone().add(z-1, 'days')
+      oz=origin.clone().add(z-1, 'days')
       bin=[]
       seq=0
       for p in [1..6] by 1
         for gi in G[z][p]
+          ow=oz.clone().add(gi.week[0]-1, 'weeks')
           bin.push {
             seq   : seq++
             name  : @escape @nameStr gi
             loc   : @escape gi.loc
             desc  : @escape gi.infoStr
-            start : @timeStr(d1, gi.beginT)
-            end   : @timeStr(d1, gi.endT  )
-            ex    : @makeEx(d1, gi)
+            start : @timeStr(ow, gi.beginT)
+            end   : @timeStr(ow, gi.endT  )
+            recur : @makeRecur(oz, gi)
             uid   : @getUid()
           }
       # remove duplicate entries within a day
@@ -350,7 +349,7 @@ ical=new ->
       ).sort((a, b)->
         a.seq-b.seq
       )
-    ret.map((x)=>@template ICAL_EVENT, x).join('')
+    ret.map((x)=>@template ICAL_EVENT, x).join('\n')
   @makeW=(origin, nameFactory)->
     (for w in [1..16] by 1
       start=origin.clone().add(w-1, 'weeks')
@@ -361,15 +360,17 @@ ical=new ->
         end   : @dateStr end
         uid   : @getUid()
       }
-    ).join('')
+    ).join('\n')
 
   @make=(Gr, Gl, origin)->
     @uidBase=moment().unix()+'@thucal'
-    ICAL_HEADER+
-    @makeG(Gr, origin)+
-    @makeG(Gl, origin)+
-    @makeW(origin, (w)->"第#{w}周")+
-    ICAL_FOOTER
+    [
+      ICAL_HEADER
+      @makeG(Gr, origin)
+      @makeG(Gl, origin)
+      @makeW(origin, (w)->"第#{w}周")
+      ICAL_FOOTER
+    ].join('\n')
   this
 
 
