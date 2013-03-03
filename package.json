@@ -1,7 +1,7 @@
 {
   "name": "thucal2",
   "description": "Export Tsinghua University curriculum to iCalendar",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "homepage": "https://github.com/smilekzs/thucal2",
   "author": {
     "name": "smilekzs"
