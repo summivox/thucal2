@@ -212,6 +212,7 @@ getLrel=(L, origin)->
   Lrel=[]
   for x in L
     Lrel[x.ymd.diff(origin, 'days')]=x.items
+  Lrel
 
 # complete G using information from Lrel
 # time priority: G-side > L-side > default(neither G nor L displays time)
