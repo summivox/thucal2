@@ -429,8 +429,8 @@ unsafeWindow.thucal=thucal=new ->
 
     @ui={}
     # button
-    $('input[name="export2"]').before("""
-      <input type="button" id="thucal_button" value="THUCAL: 导出为iCalendar">
+    $('div.tddr').prepend("""
+      <input type="button" id="thucal_button" class="souSuo yahei" style="width:200px" value="THUCAL: 导出为iCalendar">
     """)
     @ui.button=$('#thucal_button')
     @ui.button.on 'click', =>@make()
