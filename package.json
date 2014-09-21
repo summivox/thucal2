@@ -1,7 +1,7 @@
 {
   "name": "thucal2",
   "description": "Export Tsinghua University curriculum to iCalendar",
-  "version": "0.3.13",
+  "version": "0.4.0",
   "homepage": "https://github.com/summivox/thucal2",
   "author": {
     "name": "summivox"
