@@ -377,7 +377,7 @@ ical=new ->
 ############
 ## I/O
 
-ERR_MSG_LIST='list错误：检查是否已登录http://info.tsinghua.edu.cn/'
+ERR_MSG_LIST='list错误：检查是否已登录<a href="http://info.tsinghua.edu.cn/">info</a>'
 stringify=(p)->
   (for k, v of p
     (encodeURIComponent(k) + '=' + encodeURIComponent(v))
