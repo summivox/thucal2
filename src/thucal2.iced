@@ -93,8 +93,11 @@ parseWeekStr=(weekStr)->
 ## parse_L
 parse_L=(root, termIdP)->
   days=root.find('td.doc_title').map(->
-    if !(match=/(\d+)月(\d+)日/.exec @innerHTML)? then throw Error @innerHTML
-    md=inferYear(termIdP, parseInt(match[1]), parseInt(match[2]))
+    if !(match=/(\d{4})-(\d{2})-(\d{2})/.exec @innerHTML)? then throw Error @innerHTML
+    #md=inferYear(termIdP, parseInt(match[1]), parseInt(match[2]))
+    matchN = match[1..].map Number
+    --matchN[1] # moment [yyyy, MM-1, dd]
+    md = moment matchN
   )
   tables=root.find('> table.data_list_table')
   for ymd, i in days
