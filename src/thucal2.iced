@@ -438,8 +438,8 @@ unsafeWindow.thucal=thucal=new ->
     @ui.button=$('#thucal_button')
     @ui.button.on 'click', =>@make()
     # log
-    $('#a1_1').parentsUntil('form').last().after("""
-      <pre><code id="thucal_status" style="
+    $('#a1_1').parentsUntil('div.xinXi2').last().after("""
+      <pre class="tab" style="background:#F4F4F4"><code id="thucal_status" style="
         font-size: 10pt;
         line-height: 1.2em;
         font-family: Consolas, 'Courier New', monospace;

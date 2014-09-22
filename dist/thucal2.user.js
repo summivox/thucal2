@@ -4,6 +4,7 @@
 // @namespace     http://github.com/smilekzs
 // @version       0.4.0
 // @description   Export Tsinghua University curriculum to iCalendar
+// @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
 // ==/UserScript==
@@ -654,7 +655,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
           return _this.make();
         };
       })(this));
-      $('#a1_1').parentsUntil('form').last().after("<pre><code id=\"thucal_status\" style=\"\n  font-size: 10pt;\n  line-height: 1.2em;\n  font-family: Consolas, 'Courier New', monospace;\n\"></code></pre>");
+      $('#a1_1').parentsUntil('div.xinXi2').last().after("<pre class=\"tab\" style=\"background:#F4F4F4\"><code id=\"thucal_status\" style=\"\n  font-size: 10pt;\n  line-height: 1.2em;\n  font-family: Consolas, 'Courier New', monospace;\n\"></code></pre>");
       this.ui.status = $('#thucal_status');
       this.ui.log = function(s) {
         return this.status.append(s + '\n');
