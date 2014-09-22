@@ -29,6 +29,7 @@ module.exports = (grunt) ->
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
+// @include       *.sslvpn.tsinghua.edu.cn*/syxk.vsyxkKcapb.do*
 // ==/UserScript==
 
 //#include

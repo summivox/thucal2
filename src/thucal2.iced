@@ -450,6 +450,7 @@ unsafeWindow.thucal=thucal=new ->
 
     ## params
 
+	
     if document.location.toString().match(/Yjs/)
       @params=
         listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
@@ -461,6 +462,11 @@ unsafeWindow.thucal=thucal=new ->
         listVerb: 'bks_jxrl_all'
         listRole: 'bks'
 
+	
+    if document.location.toString().match(/sslvpn/)
+		alert("SSLVPN test");
+		@params.listUrl="?"
+		
   @make=->
     @ui.log "******THUCAL2******"
     termIdP=parseTermId($('input[name=p_xnxq]').val())
