@@ -23,7 +23,9 @@
     1. THUCAL2只有在【学期开始之前半天】开始才可以使用（info在此之前还是上个学期的模式，信息不全）
     2. 插件冲突。请检查 TM/GM/本插件 均已更新至最新版，并关闭其他可能在info上运行的插件再试
 * Q: 选课时间过了怎么办？
-  A: 登录info，右侧【选课信息】=>【进入选课】，如图：
+  A: 点击 [https://zhjwxk.cic.tsinghua.edu.cn/xklogin.do](https://zhjwxk.cic.tsinghua.edu.cn/xklogin.do)  
+
+     或者：登录info，右侧【选课信息】=>【进入选课】，如图：
   ![][zhjw]
 
 
