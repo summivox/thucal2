@@ -466,6 +466,7 @@ unsafeWindow.thucal=thucal=new ->
     if document.location.toString().match(/sslvpn/)
 		alert("SSLVPN test");
 		@params.listUrl="?"
+		@ui.button.text("THUCAL export under SSLVPN -- under development")
 		
   @make=->
     @ui.log "******THUCAL2******"
