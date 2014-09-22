@@ -26,6 +26,7 @@ module.exports = (grunt) ->
 // @namespace     http://github.com/smilekzs
 // @version       <%= pkg.version %>
 // @description   <%= pkg.description %>
+// @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
 // ==/UserScript==
