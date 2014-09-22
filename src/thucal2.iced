@@ -438,7 +438,7 @@ unsafeWindow.thucal=thucal=new ->
     @ui.button=$('#thucal_button')
     @ui.button.on 'click', =>@make()
     # log
-    $('#a1_1').parentsUntil('div.xinXi').last().after("""
+    $('#a1_1').parentsUntil('div.xinXi2').last().after("""
       <pre><code id="thucal_status" style="
         font-size: 10pt;
         line-height: 1.2em;
