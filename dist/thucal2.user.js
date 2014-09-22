@@ -4,6 +4,7 @@
 // @namespace     http://github.com/smilekzs
 // @version       0.4.0
 // @description   Export Tsinghua University curriculum to iCalendar
+// @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
 // ==/UserScript==
