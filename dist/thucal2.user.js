@@ -655,7 +655,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
           return _this.make();
         };
       })(this));
-      $('#a1_1').parentsUntil('form').last().after("<pre><code id=\"thucal_status\" style=\"\n  font-size: 10pt;\n  line-height: 1.2em;\n  font-family: Consolas, 'Courier New', monospace;\n\"></code></pre>");
+      $('#a1_1').parentsUntil('div.xinXi').last().after("<pre><code id=\"thucal_status\" style=\"\n  font-size: 10pt;\n  line-height: 1.2em;\n  font-family: Consolas, 'Courier New', monospace;\n\"></code></pre>");
       this.ui.status = $('#thucal_status');
       this.ui.log = function(s) {
         return this.status.append(s + '\n');
