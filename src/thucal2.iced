@@ -461,23 +461,31 @@ unsafeWindow.thucal=thucal=new ->
         listRole: 'bks'
 		
     if document.location.toString().match(/sslvpn/)
-      alert("SSLVPN test")
+      alert "SSLVPN test"
+      thucal.ui.log "SSLVPN adaptation: logging into info..."
+      #open info page (to utilize sslvpn system's auto-login feature)
       await GM_xmlhttpRequest {
-		url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn"
-		method: 'GET'
-		onload: defer(this)
-		onerror: (err)->
-		  thucal.ui.log "SSLVPN Preparation Error"
-	  }
+        url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn"
+        method: 'GET'
+        onload: defer(page1)
+        onerror: (err)->
+          thucal.ui.log "Warning: SSLVPN Preparation Error (info page)..."
+      }
+	  
+      thucal.ui.log "SSLVPN adaptation: open listing page..."	  
+	  #open LIST page (to ensure jxmh.do is binded to port 11001?)
       await GM_xmlhttpRequest {
-		url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
-		method: 'GET'
-		onload: defer(this)
-		onerror: (err)->
-		  thucal.ui.log "SSLVPN Preparation Error"
-	  }
+        url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
+        method: 'GET'
+        garbage: page1
+        onload: defer(page2)
+        onerror: (err)->
+          thucal.ui.log "Warning: SSLVPN Preparation Error (listing page)..."
+      }
+      #console.log(page2.finalUrl)  #### No way to get the redurected URL (opened port); our best guess is 11001...
+      garbage=page2  #to defer the scripting process
       @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
-      @ui.button.text "THUCAL export under SSLVPN -- under development"
+      thucal.ui.button.text "THUCAL export under SSLVPN -- under development"
 	
 
 		
