@@ -462,6 +462,20 @@ unsafeWindow.thucal=thucal=new ->
 		
     if document.location.toString().match(/sslvpn/)
       alert("SSLVPN test")
+      await GM_xmlhttpRequest {
+		url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn"
+		method: 'GET'
+		onload: defer(this)
+		onerror: (err)->
+		  thucal.ui.log "SSLVPN Preparation Error"
+	  }
+      await GM_xmlhttpRequest {
+		url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
+		method: 'GET'
+		onload: defer(this)
+		onerror: (err)->
+		  thucal.ui.log "SSLVPN Preparation Error"
+	  }
       @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
       @ui.button.text "THUCAL export under SSLVPN -- under development"
 	
