@@ -462,6 +462,21 @@ unsafeWindow.thucal=thucal=new ->
 		
     if document.location.toString().match(/sslvpn/)
       alert "SSLVPN test"
+      @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
+      thucal.ui.button.text "THUCAL export under SSLVPN -- under development"
+	
+
+		
+  @make=->
+    @ui.log "******THUCAL2******"
+    termIdP=parseTermId($('input[name=p_xnxq]').val())
+    term=printTermId(termIdP)
+    @ui.log '学期：'+term
+    if termIdP.termN!=1 && termIdP.termN!=2
+      @ui.log '不支持小学期！'
+      return
+
+    if document.location.toString().match(/sslvpn/)
       thucal.ui.log "SSLVPN adaptation: logging into info..."
       #open info page (to utilize sslvpn system's auto-login feature)
       await GM_xmlhttpRequest {
@@ -483,21 +498,7 @@ unsafeWindow.thucal=thucal=new ->
           thucal.ui.log "Warning: SSLVPN Preparation Error (listing page)..."
       }
       #console.log(page2.finalUrl)  #### No way to get the redurected URL (opened port); our best guess is 11001...
-      garbage=page2  #to defer the scripting process
-      @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
-      thucal.ui.button.text "THUCAL export under SSLVPN -- under development"
-	
-
-		
-  @make=->
-    @ui.log "******THUCAL2******"
-    termIdP=parseTermId($('input[name=p_xnxq]').val())
-    term=printTermId(termIdP)
-    @ui.log '学期：'+term
-    if termIdP.termN!=1 && termIdP.termN!=2
-      @ui.log '不支持小学期！'
-      return
-
+	  
     await get_L defer(Lraw)
     @ui.log 'list完成'
 
