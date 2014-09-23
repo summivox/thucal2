@@ -449,8 +449,6 @@ unsafeWindow.thucal=thucal=new ->
     @ui.log=(s)->@status.append(s+'\n')
 
     ## params
-
-	
     if document.location.toString().match(/Yjs/)
       @params=
         listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
@@ -461,12 +459,13 @@ unsafeWindow.thucal=thucal=new ->
         listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
         listVerb: 'bks_jxrl_all'
         listRole: 'bks'
-
-	
+		
     if document.location.toString().match(/sslvpn/)
-		alert("SSLVPN test");
-		@params.listUrl="?"
-		@ui.button.text("THUCAL export under SSLVPN -- under development")
+      alert("SSLVPN test")
+      @params.listUrl="?"
+      @ui.button.text "THUCAL export under SSLVPN -- under development"
+	
+
 		
   @make=->
     @ui.log "******THUCAL2******"
