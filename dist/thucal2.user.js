@@ -8,7 +8,11 @@
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
 // @include       https://sslvpn.tsinghua.edu.cn:*/syxk.vsyxkKcapb.do*
-// @include       https://sslvpn.tsinghua.edu.cn:*/xkBks.vxkBksXkbBs.do*
+// @include       https://sslvpn.tsinghua.edu.cn:*/xkBks.vxkBksXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn:*/xkYjs.vxkYjsXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+syxk.vsyxkKcapb.do*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+xkBks.vxkBksXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+xkYjs.vxkYjsXkbBs.do?m=kbSearch*
 // ==/UserScript==
 
 //#include/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
@@ -649,6 +653,9 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
       saveAs: saveAs
     };
     this.init = function() {
+      var garbage, page1, page2, ___iced_passed_deferral, __iced_deferrals, __iced_k;
+      __iced_k = __iced_k_noop;
+      ___iced_passed_deferral = iced.findDeferral(arguments);
       this.ui = {};
       $('div.tddr').prepend("<input type=\"button\" id=\"thucal_button\" class=\"souSuo yahei\" style=\"width:200px\" value=\"THUCAL: 导出为iCalendar\">");
       this.ui.button = $('#thucal_button');
@@ -677,8 +684,66 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
       }
       if (document.location.toString().match(/sslvpn/)) {
         alert("SSLVPN test");
-        this.params.listUrl = "https://sslvpn.tsinghua.edu.cn:11001/jxmh.do";
-        return this.ui.button.text("THUCAL export under SSLVPN -- under development");
+        thucal.ui.log("SSLVPN adaptation: logging into info...");
+        (function(_this) {
+          return (function(__iced_k) {
+            __iced_deferrals = new iced.Deferrals(__iced_k, {
+              parent: ___iced_passed_deferral,
+              filename: "src/thucal2.iced",
+              funcname: "init"
+            });
+            GM_xmlhttpRequest({
+              url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn",
+              method: 'GET',
+              onload: __iced_deferrals.defer({
+                assign_fn: (function() {
+                  return function() {
+                    return page1 = arguments[0];
+                  };
+                })(),
+                lineno: 469
+              }),
+              onerror: function(err) {
+                return thucal.ui.log("Warning: SSLVPN Preparation Error (info page)...");
+              }
+            });
+            __iced_deferrals._fulfill();
+          });
+        })(this)((function(_this) {
+          return function() {
+            thucal.ui.log("SSLVPN adaptation: open listing page...");
+            (function(__iced_k) {
+              __iced_deferrals = new iced.Deferrals(__iced_k, {
+                parent: ___iced_passed_deferral,
+                filename: "src/thucal2.iced",
+                funcname: "init"
+              });
+              GM_xmlhttpRequest({
+                url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all",
+                method: 'GET',
+                garbage: page1,
+                onload: __iced_deferrals.defer({
+                  assign_fn: (function() {
+                    return function() {
+                      return page2 = arguments[0];
+                    };
+                  })(),
+                  lineno: 480
+                }),
+                onerror: function(err) {
+                  return thucal.ui.log("Warning: SSLVPN Preparation Error (listing page)...");
+                }
+              });
+              __iced_deferrals._fulfill();
+            })(function() {
+              garbage = page2;
+              _this.params.listUrl = "https://sslvpn.tsinghua.edu.cn:11001/jxmh.do";
+              return __iced_k(thucal.ui.button.text("THUCAL export under SSLVPN -- under development"));
+            });
+          };
+        })(this));
+      } else {
+        return __iced_k();
       }
     };
     this.make = function() {
@@ -706,7 +771,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
                 return Lraw = arguments[0];
               };
             })(),
-            lineno: 478
+            lineno: 500
           }));
           __iced_deferrals._fulfill();
         });
