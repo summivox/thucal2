@@ -459,14 +459,14 @@ unsafeWindow.thucal=thucal=new ->
         listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
         listVerb: 'bks_jxrl_all'
         listRole: 'bks'
-		
+
     if document.location.toString().match(/sslvpn/)
       alert "SSLVPN test"
       @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
       thucal.ui.button.text "THUCAL export under SSLVPN -- under development"
-	
 
-		
+
+
   @make=->
     @ui.log "******THUCAL2******"
     termIdP=parseTermId($('input[name=p_xnxq]').val())
@@ -486,9 +486,9 @@ unsafeWindow.thucal=thucal=new ->
         onerror: (err)->
           thucal.ui.log "Warning: SSLVPN Preparation Error (info page)..."
       }
-	  
+
       thucal.ui.log "SSLVPN adaptation: open listing page..."	  
-	  #open LIST page (to ensure jxmh.do is binded to port 11001?)
+      #open LIST page (to ensure jxmh.do is binded to port 11001?)
       await GM_xmlhttpRequest {
         url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
         method: 'GET'
@@ -498,7 +498,7 @@ unsafeWindow.thucal=thucal=new ->
           thucal.ui.log "Warning: SSLVPN Preparation Error (listing page)..."
       }
       #console.log(page2.finalUrl)  #### No way to get the redurected URL (opened port); our best guess is 11001...
-	  
+
     await get_L defer(Lraw)
     @ui.log 'list完成'
 
