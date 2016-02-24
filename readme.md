@@ -50,8 +50,8 @@ Use `dist/thucal2.user.js`
 
 This userscript is MIT licensed. See http://opensource.org/licenses/MIT for details.
 
-[step1-1]: http://i.imgur.com/OxO5RMg.png
-[step2-1]: http://i.imgur.com/SXHWGwW.png
+[step1-1]: http://i.imgur.com/iycvWRo.png
+[step2-1]: http://i.imgur.com/1SNBYd7.png
 [step3-1]: http://i.imgur.com/IhH4vu0.png
 [step4-1]: http://i.imgur.com/6oMMJqy.png
 [result]:  http://i.imgur.com/96uOClz.png
