@@ -1,9 +1,8 @@
 # THUCAL2: Smart curriculum exporter for Tsinghua University
 
-Latest stable release is hosted on userscript.org:  
-http://userscripts.org/scripts/show/159785
+**Download**: https://github.com/summivox/thucal2/blob/master/dist/thucal2.user.js
 
-Feel free to file a bug report here or at userscript.org!
+Surprisingly it still works <sup><b>TM</b></sup>, years after I (summivox) graduated, despite rumored complete overhaul to the whole website (which of course has become vaporware).
 
 ##Screenshot
 
@@ -48,7 +47,7 @@ Use `dist/thucal2.user.js`
 
 ##License
 
-This userscript is MIT licensed. See http://opensource.org/licenses/MIT for details.
+MIT
 
 [step1-1]: http://i.imgur.com/iycvWRo.png
 [step2-1]: http://i.imgur.com/1SNBYd7.png
