@@ -1,6 +1,6 @@
 # THUCAL2: Smart curriculum exporter for Tsinghua University
 
-**Download**: https://github.com/summivox/thucal2/blob/master/dist/thucal2.user.js
+**Download**: https://github.com/summivox/thucal2/raw/master/dist/thucal2.user.js
 
 Surprisingly it still works <sup><b>TM</b></sup>, years after I (summivox) graduated, despite rumored complete overhaul to the whole website (which of course has become vaporware).
 
