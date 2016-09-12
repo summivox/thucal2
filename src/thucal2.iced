@@ -461,9 +461,7 @@ unsafeWindow.thucal=thucal=new ->
         listRole: 'bks'
 
     if document.location.toString().match(/sslvpn/)
-      alert "SSLVPN test"
       @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
-      thucal.ui.button.text "THUCAL export under SSLVPN -- under development"
 
 
 
@@ -477,7 +475,7 @@ unsafeWindow.thucal=thucal=new ->
       return
 
     if document.location.toString().match(/sslvpn/)
-      thucal.ui.log "SSLVPN adaptation: logging into info..."
+      @ui.log "SSLVPN 模式: 自动登录info..."
       #open info page (to utilize sslvpn system's auto-login feature)
       await GM_xmlhttpRequest {
         url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn"
@@ -487,7 +485,7 @@ unsafeWindow.thucal=thucal=new ->
           thucal.ui.log "Warning: SSLVPN Preparation Error (info page)..."
       }
 
-      thucal.ui.log "SSLVPN adaptation: open listing page..."	  
+      @ui.log "SSLVPN 模式: 准备导出页面"	  
       #open LIST page (to ensure jxmh.do is binded to port 11001?)
       await GM_xmlhttpRequest {
         url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
