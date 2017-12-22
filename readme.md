@@ -4,11 +4,11 @@
 
 Surprisingly it still works <sup><b>TM</b></sup>, years after I (summivox) graduated, despite rumored complete overhaul to the whole website (which of course has become vaporware).
 
-##Screenshot
+## Screenshot
 
 ![][result]
 
-##Main Features
+## Main Features
 
 * Fully automated operation: only one click is needed
     * Needs no "origin date" input
@@ -19,7 +19,7 @@ Surprisingly it still works <sup><b>TM</b></sup>, years after I (summivox) gradu
 * Standard iCalendar format for import into popular calendar apps
 * All processing done locally for the sake of privacy
 
-##Build
+## Build
 
 THUCAL2 is built using [GRUNT](http://gruntjs.com).
 
@@ -31,7 +31,7 @@ grunt release
 
 Use `dist/thucal2.user.js`
 
-##Usage
+## Usage
 
 1. Log into http://info.tsinghua.edu.cn/  
    ![][step1-1]  
@@ -45,7 +45,7 @@ Use `dist/thucal2.user.js`
 4. Import file into calendar app  
    ![][step4-1]  
 
-##License
+## License
 
 MIT
 
