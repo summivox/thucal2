@@ -29,6 +29,13 @@ module.exports = (grunt) ->
 // @include       *.cic.tsinghua.edu.cn/syxk.vsyxkKcapb.do*
 // @include       *.cic.tsinghua.edu.cn/xkBks.vxkBksXkbBs.do*
 // @include       *.cic.tsinghua.edu.cn/xkYjs.vxkYjsXkbBs.do*
+// @include       https://sslvpn.tsinghua.edu.cn:*/syxk.vsyxkKcapb.do*
+// @include       https://sslvpn.tsinghua.edu.cn:*/xkBks.vxkBksXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn:*/xkYjs.vxkYjsXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+syxk.vsyxkKcapb.do*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+xkBks.vxkBksXkbBs.do?m=kbSearch*
+// @include       https://sslvpn.tsinghua.edu.cn/,DanaInfo=zhjwxk.cic.tsinghua.edu.cn+xkYjs.vxkYjsXkbBs.do?m=kbSearch*
+// @grant GM_xmlhttpRequest
 // ==/UserScript==
 
 //#include

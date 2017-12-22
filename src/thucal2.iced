@@ -449,7 +449,6 @@ unsafeWindow.thucal=thucal=new ->
     @ui.log=(s)->@status.append(s+'\n')
 
     ## params
-
     if document.location.toString().match(/Yjs/)
       @params=
         listUrl: 'http://zhjw.cic.tsinghua.edu.cn/jxmh.do'
@@ -461,6 +460,11 @@ unsafeWindow.thucal=thucal=new ->
         listVerb: 'bks_jxrl_all'
         listRole: 'bks'
 
+    if document.location.toString().match(/sslvpn/)
+      @params.listUrl="https://sslvpn.tsinghua.edu.cn:11001/jxmh.do"
+
+
+
   @make=->
     @ui.log "******THUCAL2******"
     termIdP=parseTermId($('input[name=p_xnxq]').val())
@@ -469,6 +473,29 @@ unsafeWindow.thucal=thucal=new ->
     if termIdP.termN!=1 && termIdP.termN!=2
       @ui.log '不支持小学期！'
       return
+
+    if document.location.toString().match(/sslvpn/)
+      @ui.log "SSLVPN 模式: 自动登录info..."
+      #open info page (to utilize sslvpn system's auto-login feature)
+      await GM_xmlhttpRequest {
+        url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Finfo.tsinghua.edu.cn"
+        method: 'GET'
+        onload: defer(page1)
+        onerror: (err)->
+          thucal.ui.log "Warning: SSLVPN Preparation Error (info page)..."
+      }
+
+      @ui.log "SSLVPN 模式: 准备导出页面"	  
+      #open LIST page (to ensure jxmh.do is binded to port 11001?)
+      await GM_xmlhttpRequest {
+        url: "https://sslvpn.tsinghua.edu.cn/dana/home/launch.cgi?url=http%3A%2F%2Fzhjw.cic.tsinghua.edu.cn%2Fjxmh.do%3Fm%3Dbks_jxrl_all"
+        method: 'GET'
+        garbage: page1
+        onload: defer(page2)
+        onerror: (err)->
+          thucal.ui.log "Warning: SSLVPN Preparation Error (listing page)..."
+      }
+      #console.log(page2.finalUrl)  #### No way to get the redurected URL (opened port); our best guess is 11001...
 
     await get_L defer(Lraw)
     @ui.log 'list完成'
